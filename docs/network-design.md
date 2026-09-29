@@ -24,13 +24,21 @@ See `diagrams/logical-topology.png`.
 |---|---|
 | Router-on-a-stick for inter-VLAN routing | Single edge router keeps the design appropriately scoped for an "Intermediate" difficulty challenge; avoids introducing a separate L3 core switch that isn't required by the brief. |
 | Floating static default route for backup ISP | Directly implements the assigned "Default Routing (edge/ISP path design)" challenge, and satisfies the design constraint (backup path) without extra routing protocols. |
-| VLAN segmentation by department | Contains broadcast traffic, supports department-level access control (e.g. restricting Finance/IT from public Reception access). |
+| VLAN segmentation by department | Contains broadcast traffic and enables department-level access control. |
+| Reception restricted from Finance and IT via extended ACL | Reception is the public-facing VLAN; Finance and IT hold sensitive/internal functions, so an extended ACL on R-EDGE's VLAN 50 sub-interface (`RESTRICT_RECEPTION`) explicitly denies Reception-sourced traffic to both subnets. DNS to the server (in the IT VLAN) is permitted first so Reception can still resolve names despite the restriction. Management and Employment Services are deliberately left unrestricted from Finance/IT and each other, since the brief didn't require broader segmentation. |
 | DHCP/DNS server placed in its own VLAN (40) | Centralises core services, reachable from every VLAN via inter-VLAN routing, easy to secure separately from end-user VLANs. |
 | Growth absorbed via subnet headroom, not new subnets | Directly satisfies CR5's "without renumbering" requirement — every device keeps its existing subnet as headcount grows. |
 
-## 4. Verification plan (for Milestone 2 / final submission)
+## 4. Access control: Reception restriction
+
+- **ACL:** `RESTRICT_RECEPTION`, applied inbound on R-EDGE's `GigabitEthernet0/0/0.50` (Reception's sub-interface).
+- **Rule order:** permit Reception → Server0 DNS (UDP/TCP 53) first, then deny Reception → Finance (`192.168.41.64/28`) and Reception → IT (`192.168.41.80/28`), then permit everything else.
+- **Effect:** Reception can still reach the internet and resolve DNS, but cannot reach Finance or IT hosts directly. Management, Employment Services, Finance, and IT remain fully open to each other.
+
+## 5. Verification plan (for Milestone 2 / final submission)
 
 - End-to-end connectivity test between every VLAN and the internet.
 - Simulated primary ISP link failure (shut the primary WAN interface) → confirm the floating default route is installed and traffic (including Finance's) continues to flow via the backup ISP.
 - `show ip route` before/after failure to demonstrate the administrative-distance behaviour.
 - DHCP lease verification on each VLAN.
+- Reception-to-Finance/IT ping fails; Management/Employment Services-to-Finance/IT ping still succeeds; Reception DNS lookups still succeed despite the restriction.
