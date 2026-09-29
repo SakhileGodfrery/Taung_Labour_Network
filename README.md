@@ -18,7 +18,9 @@ The network is built around two requirements from the client brief:
 1. **Design constraint** — a backup internet path is required for the Finance function.
 2. **Change request CR5** — user numbers will grow by 25%; the addressing plan must absorb this without renumbering.
 
-These are addressed together through the assigned technical challenge: the edge router holds a **primary default route** to the main ISP and a **floating static default route** to a backup ISP, so internet access (including Finance's) survives a primary-link failure. The IP addressing plan builds 25%+ headroom into every VLAN subnet from the start, so growth never requires re-addressing a device.
+These are addressed together through the assigned technical challenge: the edge router holds a **primary default route** to the main ISP and a **floating static default route** to a backup ISP, so internet access (including Finance's) survives a primary-link failure. Dual NAT overload rules (one per WAN interface) keep internet access working regardless of which path is active. The IP addressing plan builds 25%+ headroom into every VLAN subnet from the start, so growth never requires re-addressing a device.
+
+As an additional access-control measure, an extended ACL restricts the public-facing Reception VLAN from reaching Finance or IT, while preserving DNS resolution — see `docs/network-design.md` for details.
 
 ## Repository structure
 
@@ -26,14 +28,23 @@ These are addressed together through the assigned technical challenge: the edge 
 ├── README.md                     ← you are here
 ├── docs/
 │   ├── client-requirements.md    Client needs, functional & non-functional requirements
-│   ├── network-design.md         Physical and logical topology, design decisions
+│   ├── network-design.md         Physical and logical topology, design decisions, ACL
 │   └── ip-addressing-plan.md     VLSM subnetting, addressing table
 ├── diagrams/
 │   ├── physical-topology.png
 │   └── logical-topology.png
-├── packet-tracer/                .pkt file (added at Milestone 2)
-├── screenshots/                  Configuration and testing evidence (added from Milestone 2)
-└── reflection.md                 Ongoing build notes and troubleshooting log
+├── configs/                      Full running-config for every device
+│   ├── R-EDGE.txt
+│   ├── SW-CORE.txt
+│   ├── SW-MGMT.txt
+│   ├── SW-EMP.txt
+│   ├── SW-FIN.txt
+│   ├── SW-IT.txt
+│   └── SW-RECEP.txt
+├── packet-tracer/
+│   └── taung-labour-network.pkt  Final working Packet Tracer file
+├── screenshots/                  Configuration and testing evidence
+└── reflection.md                 Build notes and troubleshooting log
 ```
 
 ## Milestones
@@ -41,9 +52,9 @@ These are addressed together through the assigned technical challenge: the edge 
 | Milestone | Date | Status |
 |---|---|---|
 | Milestone 1 — Client design review | 28 Aug 2026 | ✅ Requirements, topology, addressing plan, repo scaffold |
-| Milestone 2 — Client implementation review | 02 Oct 2026 | ⬜ Working Packet Tracer file, feature implemented, testing evidence |
+| Milestone 2 — Client implementation review | 02 Oct 2026 | 🔄 In progress — device configs and Default Routing challenge implemented; testing evidence and final `.pkt` being finalised |
 | Final submission | 16 Oct 2026 | ⬜ .pkt, GitHub portfolio, technical report, video demonstration |
 
 ## How to review this project
 
-Start with `docs/client-requirements.md` for the brief interpretation, then `docs/network-design.md` for the topology and routing decisions, then `docs/ip-addressing-plan.md` for the full VLSM breakdown.
+Start with `docs/client-requirements.md` for the brief interpretation, then `docs/network-design.md` for the topology, routing, and access-control decisions, then `docs/ip-addressing-plan.md` for the full VLSM breakdown. Device configurations are in `configs/`, and `reflection.md` documents the troubleshooting process behind the final working setup (hardware module limitations, cabling fixes, and NAT-over-failover behaviour).
