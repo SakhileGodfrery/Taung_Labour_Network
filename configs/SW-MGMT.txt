@@ -1,0 +1,19 @@
+hostname SW-MGMT
+vlan 10
+ name MANAGEMENT
+vlan 99
+ name NATIVE_MGMT
+interface FastEthernet0/1
+ switchport mode trunk
+ switchport trunk native vlan 99
+ switchport trunk allowed vlan 10,99
+interface range FastEthernet0/2 - 24
+ switchport mode access
+ switchport access vlan 10
+ spanning-tree portfast
+interface Vlan99
+ ip address 192.168.41.131 255.255.255.240
+ no shutdown
+ip default-gateway 192.168.41.129
+end
+write memory

@@ -1,0 +1,27 @@
+hostname SW-CORE
+vlan 10
+ name MANAGEMENT
+vlan 20
+ name EMPLOYMENT_SERVICES
+vlan 30
+ name FINANCE
+vlan 40
+ name IT_SERVERS
+vlan 50
+ name RECEPTION
+vlan 99
+ name NATIVE_MGMT
+interface FastEthernet0/1
+ switchport mode trunk
+ switchport trunk native vlan 99
+ switchport trunk allowed vlan 10,20,30,40,50,99
+interface range FastEthernet0/2 - 6
+ switchport mode trunk
+ switchport trunk native vlan 99
+ switchport trunk allowed vlan 10,20,30,40,50,99
+interface Vlan99
+ ip address 192.168.41.130 255.255.255.240
+ no shutdown
+ip default-gateway 192.168.41.129
+end
+write memory

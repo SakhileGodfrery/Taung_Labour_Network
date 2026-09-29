@@ -1,0 +1,76 @@
+hostname R-EDGE
+no ip domain-lookup
+
+interface GigabitEthernet0/0/0
+ description Trunk to SW-CORE
+ no ip address
+ no shutdown
+
+interface GigabitEthernet0/0/0.10
+ description VLAN 10 - Management
+ encapsulation dot1Q 10
+ ip address 192.168.41.1 255.255.255.224
+ ip helper-address 192.168.41.85
+ ip nat inside
+
+interface GigabitEthernet0/0/0.20
+ description VLAN 20 - Employment Services
+ encapsulation dot1Q 20
+ ip address 192.168.41.33 255.255.255.224
+ ip helper-address 192.168.41.85
+ ip nat inside
+
+interface GigabitEthernet0/0/0.30
+ description VLAN 30 - Finance
+ encapsulation dot1Q 30
+ ip address 192.168.41.65 255.255.255.240
+ ip helper-address 192.168.41.85
+ ip nat inside
+
+interface GigabitEthernet0/0/0.40
+ description VLAN 40 - IT / Servers
+ encapsulation dot1Q 40
+ ip address 192.168.41.81 255.255.255.240
+ ip nat inside
+
+interface GigabitEthernet0/0/0.50
+ description VLAN 50 - Reception / Public
+ encapsulation dot1Q 50
+ ip address 192.168.41.97 255.255.255.224
+ ip helper-address 192.168.41.85
+ ip nat inside
+ ip access-group RESTRICT_RECEPTION in
+
+interface GigabitEthernet0/0/0.99
+ description Native / switch management VLAN
+ encapsulation dot1Q 99 native
+ ip address 192.168.41.129 255.255.255.240
+
+interface GigabitEthernet0/0/1
+ description Link to Primary ISP
+ ip address 192.168.41.145 255.255.255.252
+ ip nat outside
+ no shutdown
+
+interface Serial0/1/0
+ description Link to Backup ISP
+ ip address 192.168.41.149 255.255.255.252
+ ip nat outside
+ no shutdown
+
+ip route 0.0.0.0 0.0.0.0 192.168.41.146 1
+ip route 0.0.0.0 0.0.0.0 192.168.41.150 5
+
+ip access-list extended RESTRICT_RECEPTION
+ permit udp 192.168.41.96 0.0.0.31 host 192.168.41.85 eq domain
+ permit tcp 192.168.41.96 0.0.0.31 host 192.168.41.85 eq domain
+ deny ip 192.168.41.96 0.0.0.31 192.168.41.64 0.0.0.15
+ deny ip 192.168.41.96 0.0.0.31 192.168.41.80 0.0.0.15
+ permit ip any any
+
+ip access-list standard NAT_ACL
+ permit 192.168.41.0 0.0.0.255
+
+ip nat inside source list NAT_ACL interface GigabitEthernet0/0/1 overload
+end
+write memory

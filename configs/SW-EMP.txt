@@ -1,0 +1,19 @@
+hostname SW-EMP
+vlan 20
+ name EMPLOYMENT_SERVICES
+vlan 99
+ name NATIVE_MGMT
+interface FastEthernet0/1
+ switchport mode trunk
+ switchport trunk native vlan 99
+ switchport trunk allowed vlan 20,99
+interface range FastEthernet0/2 - 24
+ switchport mode access
+ switchport access vlan 20
+ spanning-tree portfast
+interface Vlan99
+ ip address 192.168.41.132 255.255.255.240
+ no shutdown
+ip default-gateway 192.168.41.129
+end
+write memory

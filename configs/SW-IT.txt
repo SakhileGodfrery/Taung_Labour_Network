@@ -1,0 +1,22 @@
+hostname SW-IT
+vlan 40
+ name IT_SERVERS
+vlan 99
+ name NATIVE_MGMT
+interface FastEthernet0/1
+ switchport mode trunk
+ switchport trunk native vlan 99
+ switchport trunk allowed vlan 40,99
+interface FastEthernet0/2
+ switchport mode access
+ switchport access vlan 40
+interface range FastEthernet0/3 - 24
+ switchport mode access
+ switchport access vlan 40
+ spanning-tree portfast
+interface Vlan99
+ ip address 192.168.41.134 255.255.255.240
+ no shutdown
+ip default-gateway 192.168.41.129
+end
+write memory
