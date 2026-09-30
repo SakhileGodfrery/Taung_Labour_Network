@@ -1,7 +1,7 @@
 # CMPG 325 — Individual Semester Project
 ## Computer Networks | Project ID: CMPG325-2026-095
 
-**Student:** Sakhile Mthimunye (45224706)
+**Student:** Sakhile Mthimunye
 **Client:** Labour Department Taung Office (Taung) — Government sector
 **Assigned addressing block:** `192.168.41.0/24`
 **Assigned technical challenge:** Default Routing (edge/ISP path design) — Intermediate
@@ -52,7 +52,7 @@ As an additional access-control measure, an extended ACL restricts the public-fa
 | Milestone | Date | Status |
 |---|---|---|
 | Milestone 1 — Client design review | 28 Aug 2026 | ✅ Requirements, topology, addressing plan, repo scaffold |
-| Milestone 2 — Client implementation review | 02 Oct 2026 | 🔄 In progress — device configs and Default Routing challenge implemented; testing evidence and final `.pkt` being finalised |
+| Milestone 2 — Client implementation review | 02 Oct 2026 | ✅ device configs and Default Routing challenge implemented; testing evidence and final `.pkt` being finalised |
 | Final submission | 16 Oct 2026 | ⬜ .pkt, GitHub portfolio, technical report, video demonstration |
 
 ## How to review this project
