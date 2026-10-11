@@ -5,7 +5,6 @@
 **Client:** Labour Department Taung Office (Taung) — Government sector
 **Assigned addressing block:** `192.168.41.0/24`
 **Assigned technical challenge:** Default Routing (edge/ISP path design) — Intermediate
-**Project period:** 14 August 2026 – 16 October 2026
 
 ---
 
@@ -33,6 +32,7 @@ As an additional access-control measure, an extended ACL restricts the public-fa
 ├── diagrams/
 │   ├── physical-topology.png
 │   └── logical-topology.png
+├── Video Demo                    Video demostration of the whole project
 ├── configs/                      Full running-config for every device
 │   ├── R-EDGE.txt
 │   ├── SW-CORE.txt
@@ -44,6 +44,7 @@ As an additional access-control measure, an extended ACL restricts the public-fa
 ├── packet-tracer/
 │   └── taung-labour-network.pkt  Final working Packet Tracer file
 ├── screenshots/                  Configuration and testing evidence
+├── technical report              design, implemetation and testing report   
 └── reflection.md                 Build notes and troubleshooting log
 ```
 
@@ -53,7 +54,7 @@ As an additional access-control measure, an extended ACL restricts the public-fa
 |---|---|---|
 | Milestone 1 — Client design review | 28 Aug 2026 | ✅ Requirements, topology, addressing plan, repo scaffold |
 | Milestone 2 — Client implementation review | 02 Oct 2026 | ✅ device configs and Default Routing challenge implemented; testing evidence and final `.pkt` being finalised |
-| Final submission | 16 Oct 2026 | ⬜ .pkt, GitHub portfolio, technical report, video demonstration |
+| Final submission | 16 Oct 2026 | ✅ .pkt, GitHub portfolio, technical report, video demonstration |
 
 ## How to review this project
 
